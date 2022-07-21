@@ -1,18 +1,22 @@
 mod routes;
 
+use once_cell::sync::Lazy;
+use reqwest::Client;
 use std::{collections::HashMap, error::Error};
 use tracing::info;
 use tracing_subscriber;
 use warp::Filter;
+
+pub static HTTP: Lazy<Client> = Lazy::new(Client::new);
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     tracing_subscriber::fmt::init();
 
     let hook = warp::post()
-      .and(warp::path!("message"))
-      .and(warp::body::json::<HashMap<String, serde_json::Value>>())
-      .and_then(routes::message);
+        .and(warp::path!("message"))
+        .and(warp::body::json::<HashMap<String, serde_json::Value>>())
+        .and_then(routes::message);
 
     info!("Starting...");
 
