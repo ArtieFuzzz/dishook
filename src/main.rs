@@ -3,7 +3,7 @@ mod routes;
 use once_cell::sync::Lazy;
 use reqwest::Client;
 use std::{collections::HashMap, error::Error};
-use tracing::info;
+use tracing::{info, warn};
 use tracing_subscriber;
 use warp::Filter;
 
@@ -24,7 +24,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         tokio::signal::ctrl_c()
             .await
             .expect("Could not set CTRL-C handler");
-        info!("Received Termination Signal...");
+        warn!("Received Termination Signal...");
         std::process::exit(0)
     });
 

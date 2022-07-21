@@ -10,10 +10,12 @@ pub async fn message(
     } else {
       panic!("You must set the WEBHOOK_URL Env Variable")
     };
-    let message = &payload["message"];
+
+    let title = payload["title"].as_str().unwrap_or("Message");
+    let message = payload["message"].as_str().unwrap_or("No Message...");
     let embed = serde_json::json!({
-      "title": "Hello world!",
-      "description": message.as_str()
+      "title": title,
+      "description": message
     });
 
     let body = serde_json::json!({
