@@ -1,12 +1,6 @@
 use crate::HTTP;
-use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::env::var;
-
-#[derive(Serialize, Deserialize)]
-struct WebhookMessage {
-    content: String,
-}
 
 pub async fn message(
     payload: HashMap<String, serde_json::Value>,
@@ -17,10 +11,14 @@ pub async fn message(
       panic!("You must set the WEBHOOK_URL Env Variable")
     };
     let message = &payload["message"];
+    let embed = serde_json::json!({
+      "title": "Hello world!",
+      "description": message.as_str()
+    });
 
-    let body = WebhookMessage {
-        content: format!("{}", message.to_string()),
-    };
+    let body = serde_json::json!({
+        "embeds": [embed]
+    });
 
     let _ = HTTP.post(webhook_url).json(&body).send().await;
 
