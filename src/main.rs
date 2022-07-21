@@ -20,6 +20,14 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     info!("Starting...");
 
+    tokio::spawn(async move {
+        tokio::signal::ctrl_c()
+            .await
+            .expect("Could not set CTRL-C handler");
+        info!("Received Termination Signal...");
+        std::process::exit(0)
+    });
+
     warp::serve(hook).run(([127, 0, 0, 1], 80)).await;
 
     Ok(())
