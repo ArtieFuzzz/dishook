@@ -1,4 +1,5 @@
 use crate::HTTP;
+use crate::responses;
 use std::collections::HashMap;
 use std::env::var;
 
@@ -24,5 +25,5 @@ pub async fn message(
 
     let _ = HTTP.post(webhook_url).json(&body).send().await;
 
-    Ok(format!("{}", "OK"))
+    Ok(responses::success())
 }
