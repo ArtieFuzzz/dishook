@@ -1,6 +1,11 @@
-use warp::{http::Response, Reply};
+use warp::{http::{Response, response::Builder}, Reply};
 
+
+fn base() -> Builder {
+  return Response::builder()
+    .header("X-Powered-By", "ArtieFuzzz");
+}
 /// Returns an OK response
 pub fn success() -> impl Reply {
-    return Response::builder().status(200).body("OK").unwrap()
+    return base().status(200).body("OK").unwrap()
 }
