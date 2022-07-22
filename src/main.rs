@@ -37,7 +37,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 async fn handle_rejection(err: warp::Rejection) -> Result<impl warp::Reply, std::convert::Infallible> {
   if err.is_not_found() {
     Ok(warp::reply::with_status("Could not find that route", StatusCode::NOT_FOUND))
-  } else if let Some(m) = err.find::<MethodNotAllowed>() {
+  } else if let Some(_) = err.find::<MethodNotAllowed>() {
     Ok(warp::reply::with_status("METHOD_NOT_ALLOWED", StatusCode::METHOD_NOT_ALLOWED))
   } else {
     eprintln!("Unhandled rejection: {:?}", err);
